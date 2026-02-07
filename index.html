@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F&P</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <title>For My Princess</title>
     <style>
         :root {
             --primary: #ff4d6d;
@@ -32,66 +31,14 @@
             z-index: 1; pointer-events: none;
         }
 
-        .balloon {
-            position: absolute;
-            bottom: -150px;
-            opacity: 0.8;
-            z-index: 2;
-            cursor: pointer;
-            pointer-events: auto;
-            animation: floatUp linear infinite;
-            clip-path: path('M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z');
-            transform-origin: center;
-            transition: transform 0.2s ease-out, opacity 0.2s;
-        }
-
-        .balloon::after {
-            content: '';
-            width: 2px;
-            height: 50px;
-            background: rgba(140, 94, 94, 0.2);
-            position: absolute;
-            bottom: -40px;
-            left: 50%;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-130vh) rotate(15deg); }
-        }
-
-        .popping {
-            transform: scale(2);
-            opacity: 0 !important;
-        }
-
-        .header-section { 
-            text-align: center; 
-            padding: 30px 20px 0; /* Reduced padding slightly to save space */
-            z-index: 10; 
-        }
-        
-        h1 { 
-            font-family: 'Great Vibes', cursive; /* Apply cursive here */
-            font-size: 2.8rem; /* Slightly larger for the cursive look */
-            color: var(--primary); 
-            margin: 0; 
-            text-shadow: 1px 1px white; 
-        }
-
-        .recipient-name {
-            display: block;
-            font-size: 1.8rem;
-            margin-top: -10px; /* Pulls the name closer to the main text */
-            color: var(--primary);
-        }
-        
-        .message { font-style: italic; font-weight: 500; max-width: 80%; margin: 5px auto; font-size: 0.9rem; }
+        .header-section { text-align: center; padding: 50px 20px 0; z-index: 10; }
+        h1 { font-size: 2rem; color: var(--primary); margin-bottom: 8px; text-shadow: 1px 1px white; }
+        .message { font-style: italic; font-weight: 500; max-width: 80%; margin: 0 auto; }
 
         .stack-container {
             position: relative;
-            width: 260px; height: 340px; /* Scaled down slightly to ensure button visibility */
-            margin: 20px auto;
+            width: 280px; height: 380px;
+            margin: 40px auto;
             z-index: 10; perspective: 1000px;
         }
 
@@ -99,7 +46,7 @@
             position: absolute;
             width: 100%; height: 100%;
             background: white;
-            padding: 10px 10px 40px 10px;
+            padding: 10px 10px 50px 10px;
             border-radius: 2px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -120,14 +67,14 @@
         }
 
         .btn-play {
-            margin-top: 5px;
-            padding: 12px 30px;
+            margin-top: 10px;
+            padding: 15px 35px;
             border-radius: 50px;
             border: none;
             background: var(--primary);
             color: white;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 1.1rem;
             z-index: 20;
             cursor: pointer;
             box-shadow: 0 8px 20px rgba(255, 77, 109, 0.3);
@@ -137,7 +84,6 @@
 <body onmousemove="handleInteraction(event)" ontouchmove="handleInteraction(event)">
 
     <canvas id="heartCanvas"></canvas>
-    <div id="balloon-container"></div>
 
     <div class="header-section">
         <h1>Happy Valentine's Day</h1>
@@ -145,11 +91,11 @@
     </div>
 
     <div class="stack-container" id="mainStack">
-        <div class="photo-card c1" style="z-index: 5;"><img src="Princess1.jpg" alt="1"></div>
-        <div class="photo-card c2" style="z-index: 4;"><img src="Princess2.jpg" alt="2"></div>
-        <div class="photo-card c3" style="z-index: 3;"><img src="Princess3.jpg" alt="3"></div>
-        <div class="photo-card c4" style="z-index: 2;"><img src="Princess4.jpg" alt="4"></div>
-        <div class="photo-card c5" style="z-index: 1;"><img src="Princess5.jpg" alt="5"></div>
+        <div class="photo-card c1" style="z-index: 5;"><img src="Princess1.jpg"></div>
+        <div class="photo-card c2" style="z-index: 4;"><img src="Princess2.jpg"></div>
+        <div class="photo-card c3" style="z-index: 3;"><img src="Princess3.jpg"></div>
+        <div class="photo-card c4" style="z-index: 2;"><img src="Princess4.jpg"></div>
+        <div class="photo-card c5" style="z-index: 1;"><img src="Princess5.jpg"></div>
     </div>
 
     <button class="btn-play" id="playBtn" onclick="toggleMusic()">🎵 Play Our Song</button>
@@ -159,37 +105,7 @@
     </audio>
 
     <script>
-        function createBalloon() {
-            const container = document.getElementById('balloon-container');
-            const colors = ['#ff4d6d', '#ff758f', '#ff85a1', '#ffccd5'];
-            const balloon = document.createElement('div');
-            balloon.className = 'balloon';
-            const size = Math.random() * 40 + 40;
-            const left = Math.random() * 100;
-            const duration = Math.random() * 5 + 8;
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            balloon.style.left = left + 'vw';
-            balloon.style.width = size + 'px';
-            balloon.style.height = size + 'px';
-            balloon.style.backgroundColor = color;
-            balloon.style.animationDuration = duration + 's';
-            balloon.addEventListener('mousedown', pop);
-            balloon.addEventListener('touchstart', pop);
-            container.appendChild(balloon);
-            setTimeout(() => { if(balloon.parentNode) balloon.remove(); }, duration * 1000);
-        }
-
-        function pop(e) {
-            const b = e.currentTarget;
-            b.classList.add('popping');
-            let x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-            let y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-            for(let i=0; i<8; i++) hearts.push(new Heart(x, y, true));
-            setTimeout(() => b.remove(), 200);
-        }
-
-        setInterval(createBalloon, 800);
-
+        // --- 1. AUTO SHUFFLE ---
         function autoShuffle() {
             const stack = document.getElementById('mainStack');
             const cards = Array.from(stack.getElementsByClassName('photo-card'));
@@ -207,8 +123,9 @@
                 topCard.style.transform = `rotate(${Math.floor(Math.random() * 20) - 10}deg)`;
             }, 800);
         }
-        setInterval(autoShuffle, 3000);
+        setInterval(autoShuffle, 2500);
 
+        // --- 2. HEARTS ---
         const canvas = document.getElementById('heartCanvas');
         const ctx = canvas.getContext('2d');
         let hearts = [];
@@ -219,40 +136,44 @@
             constructor(x, y, isBurst = false) {
                 this.x = x; this.y = y;
                 this.size = Math.random() * 15 + 10;
-                this.speedX = (Math.random() - 0.5) * 6;
-                this.speedY = isBurst ? (Math.random() - 0.5) * 10 : -Math.random() * 2 - 1;
+                this.speedX = (Math.random() - 0.5) * 4;
+                this.speedY = isBurst ? (Math.random() - 0.5) * 6 : -Math.random() * 2 - 1;
                 this.opacity = 1;
             }
-            update() { this.x += this.speedX; this.y += this.speedY; this.opacity -= 0.02; }
-            draw() { 
-                ctx.globalAlpha = this.opacity; 
-                ctx.fillStyle = "#ff4d6d";
-                ctx.font = `${this.size}px serif`;
-                ctx.fillText('❤️', this.x, this.y); 
-            }
+            update() { this.x += this.speedX; this.y += this.speedY; this.opacity -= 0.01; }
+            draw() { ctx.globalAlpha = this.opacity; ctx.fillText('❤️', this.x, this.y); }
         }
 
         function handleInteraction(e) {
             let x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
             let y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-            if(x && y && Math.random() > 0.8) hearts.push(new Heart(x, y, true));
+            if(x && y) for(let i=0; i<3; i++) hearts.push(new Heart(x, y, true));
         }
 
         function animate() {
             ctx.clearRect(0,0, canvas.width, canvas.height);
+            if (Math.random() < 0.1) hearts.push(new Heart(Math.random() * canvas.width, canvas.height + 20));
             hearts.forEach((h, i) => { h.update(); h.draw(); if(h.opacity <= 0) hearts.splice(i, 1); });
             requestAnimationFrame(animate);
         }
         animate();
 
+        // --- 3. LOCAL AUDIO ---
         const audio = document.getElementById('myAudio');
         const btn = document.getElementById('playBtn');
         let playing = false;
+
         function toggleMusic() {
-            if(!playing) { audio.play(); btn.innerText = "⏸ Pause Song"; playing = true; } 
-            else { audio.pause(); btn.innerText = "🎵 Play Our Song"; playing = false; }
+            if(!playing) {
+                audio.play();
+                btn.innerText = "⏸ Pause Song";
+                playing = true;
+            } else {
+                audio.pause();
+                btn.innerText = "🎵 Play Our Song";
+                playing = false;
+            }
         }
     </script>
 </body>
 </html>
-
