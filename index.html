@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F&P</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #ff4d6d;
@@ -31,22 +32,19 @@
             z-index: 1; pointer-events: none;
         }
 
-        /* Heart Balloon Styling */
         .balloon {
             position: absolute;
             bottom: -150px;
             opacity: 0.8;
             z-index: 2;
             cursor: pointer;
-            pointer-events: auto; /* Changed from none to allow interaction */
+            pointer-events: auto;
             animation: floatUp linear infinite;
-            /* Creates the heart shape */
             clip-path: path('M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z');
             transform-origin: center;
             transition: transform 0.2s ease-out, opacity 0.2s;
         }
 
-        /* String for the heart */
         .balloon::after {
             content: '';
             width: 2px;
@@ -67,17 +65,33 @@
             opacity: 0 !important;
         }
 
-        .header-section { text-align: center; padding: 50px 20px 0; z-index: 10; }
+        .header-section { 
+            text-align: center; 
+            padding: 30px 20px 0; /* Reduced padding slightly to save space */
+            z-index: 10; 
+        }
         
-        /* Updated this to match the button pink */
-        h3 { font-size: 2rem; color: var(--primary); margin-bottom: 8px; text-shadow: 1px 1px white; }
+        h1 { 
+            font-family: 'Great Vibes', cursive; /* Apply cursive here */
+            font-size: 2.8rem; /* Slightly larger for the cursive look */
+            color: var(--primary); 
+            margin: 0; 
+            text-shadow: 1px 1px white; 
+        }
+
+        .recipient-name {
+            display: block;
+            font-size: 1.8rem;
+            margin-top: -10px; /* Pulls the name closer to the main text */
+            color: var(--primary);
+        }
         
-        .message { font-style: italic; font-weight: 500; max-width: 80%; margin: 0 auto; }
+        .message { font-style: italic; font-weight: 500; max-width: 80%; margin: 5px auto; font-size: 0.9rem; }
 
         .stack-container {
             position: relative;
-            width: 280px; height: 380px;
-            margin: 40px auto;
+            width: 260px; height: 340px; /* Scaled down slightly to ensure button visibility */
+            margin: 20px auto;
             z-index: 10; perspective: 1000px;
         }
 
@@ -85,7 +99,7 @@
             position: absolute;
             width: 100%; height: 100%;
             background: white;
-            padding: 10px 10px 50px 10px;
+            padding: 10px 10px 40px 10px;
             border-radius: 2px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -106,14 +120,14 @@
         }
 
         .btn-play {
-            margin-top: 10px;
-            padding: 15px 35px;
+            margin-top: 5px;
+            padding: 12px 30px;
             border-radius: 50px;
             border: none;
             background: var(--primary);
             color: white;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
             z-index: 20;
             cursor: pointer;
             box-shadow: 0 8px 20px rgba(255, 77, 109, 0.3);
@@ -127,6 +141,7 @@
 
     <div class="header-section">
         <h1>Happy Valentine's Day</h1>
+        <span class="recipient-name">Jaspreet</span>
         <p class="message">"Rabb Karke Tenu Vi Kise Naal Ho Jave Ik Tarfa."</p>
     </div>
 
@@ -145,50 +160,37 @@
     </audio>
 
     <script>
-        // --- 1. BALLOON GENERATOR ---
         function createBalloon() {
             const container = document.getElementById('balloon-container');
             const colors = ['#ff4d6d', '#ff758f', '#ff85a1', '#ffccd5'];
-            
             const balloon = document.createElement('div');
             balloon.className = 'balloon';
-            
             const size = Math.random() * 40 + 40;
             const left = Math.random() * 100;
             const duration = Math.random() * 5 + 8;
             const color = colors[Math.floor(Math.random() * colors.length)];
-
             balloon.style.left = left + 'vw';
             balloon.style.width = size + 'px';
             balloon.style.height = size + 'px';
             balloon.style.backgroundColor = color;
             balloon.style.animationDuration = duration + 's';
-            
-            // Pop event
             balloon.addEventListener('mousedown', pop);
             balloon.addEventListener('touchstart', pop);
-
             container.appendChild(balloon);
-
-            // Clean up balloon after it floats away
-            setTimeout(() => {
-                if(balloon.parentNode) balloon.remove();
-            }, duration * 1000);
+            setTimeout(() => { if(balloon.parentNode) balloon.remove(); }, duration * 1000);
         }
 
         function pop(e) {
             const b = e.currentTarget;
             b.classList.add('popping');
-            // Add some burst particles using the existing canvas logic
-            for(let i=0; i<8; i++) hearts.push(new Heart(e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY, true));
-            
+            let x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+            let y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+            for(let i=0; i<8; i++) hearts.push(new Heart(x, y, true));
             setTimeout(() => b.remove(), 200);
         }
 
-        // Spawn balloons continuously
         setInterval(createBalloon, 800);
 
-        // --- 2. AUTO SHUFFLE ---
         function autoShuffle() {
             const stack = document.getElementById('mainStack');
             const cards = Array.from(stack.getElementsByClassName('photo-card'));
@@ -208,7 +210,6 @@
         }
         setInterval(autoShuffle, 3000);
 
-        // --- 3. INTERACTIVE HEARTS (CANVAS) ---
         const canvas = document.getElementById('heartCanvas');
         const ctx = canvas.getContext('2d');
         let hearts = [];
@@ -240,31 +241,18 @@
 
         function animate() {
             ctx.clearRect(0,0, canvas.width, canvas.height);
-            hearts.forEach((h, i) => { 
-                h.update(); h.draw(); 
-                if(h.opacity <= 0) hearts.splice(i, 1); 
-            });
+            hearts.forEach((h, i) => { h.update(); h.draw(); if(h.opacity <= 0) hearts.splice(i, 1); });
             requestAnimationFrame(animate);
         }
         animate();
 
-        // --- 4. AUDIO ---
         const audio = document.getElementById('myAudio');
         const btn = document.getElementById('playBtn');
         let playing = false;
-
         function toggleMusic() {
-            if(!playing) {
-                audio.play();
-                btn.innerText = "⏸ Pause Song";
-                playing = true;
-            } else {
-                audio.pause();
-                btn.innerText = "🎵 Play Our Song";
-                playing = false;
-            }
+            if(!playing) { audio.play(); btn.innerText = "⏸ Pause Song"; playing = true; } 
+            else { audio.pause(); btn.innerText = "🎵 Play Our Song"; playing = false; }
         }
     </script>
 </body>
 </html>
-
