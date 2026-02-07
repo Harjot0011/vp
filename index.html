@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Princess</title>
+    <title>F&P</title>
     <style>
         :root {
             --primary: #ff4d6d;
             --soft-pink: #fff0f3; 
+            --warm-glow: #ffe5d9; /* The color it shifts to when music plays */
             --text-color: #8c5e5e;
         }
 
@@ -23,6 +24,17 @@
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, sans-serif;
             touch-action: manipulation;
+            transition: background-color 3s ease; /* Smooth transition for the color shift */
+        }
+
+        /* Class to trigger when music plays */
+        body.music-playing {
+            animation: backgroundPulse 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes backgroundPulse {
+            from { background-color: var(--soft-pink); }
+            to { background-color: var(--warm-glow); }
         }
 
         #heartCanvas {
@@ -44,7 +56,6 @@
             transition: transform 0.3s ease;
         }
 
-        /* The Heartbeat Animation */
         @keyframes heartbeat {
             0% { transform: scale(1); }
             25% { transform: scale(1.1); }
@@ -102,7 +113,10 @@
             z-index: 20;
             cursor: pointer;
             box-shadow: 0 8px 20px rgba(255, 77, 109, 0.3);
+            transition: transform 0.2s;
         }
+
+        .btn-play:active { transform: scale(0.95); }
     </style>
 </head>
 <body onmousemove="handleInteraction(event)" ontouchmove="handleInteraction(event)">
@@ -191,19 +205,22 @@
         }
         animate();
 
-        // --- 3. LOCAL AUDIO ---
+        // --- 3. LOCAL AUDIO & BACKGROUND SHIFT ---
         const audio = document.getElementById('myAudio');
         const btn = document.getElementById('playBtn');
+        const body = document.body;
         let playing = false;
 
         function toggleMusic() {
             if(!playing) {
                 audio.play();
                 btn.innerText = "⏸ Pause Song";
+                body.classList.add('music-playing'); // Start color shift
                 playing = true;
             } else {
                 audio.pause();
                 btn.innerText = "🎵 Play Our Song";
+                body.classList.remove('music-playing'); // Stop color shift
                 playing = false;
             }
         }
